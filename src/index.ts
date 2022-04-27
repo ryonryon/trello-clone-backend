@@ -1,12 +1,18 @@
-import fastify from "fastify";
+import Fastify from "fastify";
+import cors from "fastify-cors";
+import projects from "./controllers/projects";
 
-const server = fastify();
-
-server.get("/", async (req, rep) => {
-  return rep.send("hello world with fastify");
+const server = Fastify({
+  logger: true,
 });
 
-server.listen(8080, (err, address) => {
+server.register(cors, {
+  origin: "*",
+});
+
+server.get("/projects", projects);
+
+server.listen(5030, (err, address) => {
   if (err) {
     console.error(err);
 
