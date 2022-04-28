@@ -1,17 +1,44 @@
-import fastify from "fastify";
+import Fastify from "fastify";
+import cors from "fastify-cors";
+import projects from "./controllers/projects";
+import createConnection from "./database/createConnection";
 
-const server = fastify();
+import "dotenv/config";
 
-server.get("/", async (req, rep) => {
-  return rep.send("hello world with fastify");
-});
-
-server.listen(8080, (err, address) => {
-  if (err) {
-    console.error(err);
-
-    process.exit(1);
+const initializeDatabase = async (): Promise<void> => {
+  try {
+    await createConnection();
+  } catch (error) {
+    console.log(error);
   }
+};
 
-  console.log(`Server listening at ${address}`);
-});
+const initializeServer = () => {
+  const server = Fastify({
+    logger: true,
+  });
+
+  server.register(cors, {
+    origin: "*",
+  });
+
+  server.get("/projects", projects);
+
+  server.listen(5030, (err, address) => {
+    if (err) {
+      console.error(err);
+
+      process.exit(1);
+    }
+
+    console.log(`Server listening at ${address}`);
+  });
+};
+
+const initializeApp = async (): Promise<void> => {
+  await initializeDatabase();
+
+  initializeServer();
+};
+
+initializeApp();
