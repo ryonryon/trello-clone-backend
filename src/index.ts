@@ -13,5 +13,7 @@ server.listen(8080, (err, address) => {
     process.exit(1);
   }
 
-  console.log(`Server listening at ${address}`);
+  // console.log(`Server listening at ${address}`);
 });
+
+export default server;
