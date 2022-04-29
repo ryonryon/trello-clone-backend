@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { Projects } from "../entities";
+import { Project } from "../entities";
 
 export default async function projects(_: FastifyRequest, res: FastifyReply) {
-  const projects = await Projects.find();
+  const projects = await Project.find();
 
   return res.send(projects);
 }
