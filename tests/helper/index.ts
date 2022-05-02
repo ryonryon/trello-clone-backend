@@ -16,6 +16,7 @@ export function build(): FastifyInstance {
     process.env.POSTGRES_USER = "root";
     process.env.POSTGRES_PASSWORD = "root";
     process.env.POSTGRES_DB = "trello-clone";
+
     await initializeDatabase();
   });
 
