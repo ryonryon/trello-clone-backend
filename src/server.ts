@@ -13,6 +13,7 @@ const initializeServer = () => {
   // project
   server.get("/projects", projects);
   server.get("/projects/:projectId", project);
+
   // ticket
   server.put("/tickets/:ticketId", editTicket);
 
