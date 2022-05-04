@@ -22,11 +22,11 @@ export async function getTicketById(ticketId: string): Promise<Ticket> {
 
 export async function updateTicket(originalTicket: Ticket, updateRequestTicket: Partial<Ticket>) {
   // Check if there's any unexpected key included in the request
-  const isAllRequestKeyAssignable = Object.keys(updateRequestTicket).some((key) => {
+  const isAllRequestKeysAssignable = Object.keys(updateRequestTicket).some((key) => {
     return Object.keys(originalTicket).includes(key);
   });
 
-  if (!isAllRequestKeyAssignable)
+  if (!isAllRequestKeysAssignable)
     throw new Error(`Could not update the ticket with the request ${JSON.stringify(updateRequestTicket)}`);
 
   const updatedTicket = Object.assign(originalTicket, updateRequestTicket);
