@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
 import { project, projects } from "./controllers";
+import editTicket from "./controllers/ticket";
 
 const initializeServer = () => {
   const server = Fastify();
@@ -9,8 +10,12 @@ const initializeServer = () => {
     origin: "*",
   });
 
+  // project
   server.get("/projects", projects);
   server.get("/projects/:projectId", project);
+
+  // ticket
+  server.put("/tickets/:ticketId", editTicket);
 
   server.listen(5030, (err, address) => {
     if (err) {
