@@ -16,6 +16,7 @@ describe("getTicketById()", () => {
     // Assert
     expect(res.id).toEqual(Number(mockedId));
   });
+
   test("passed id that DOES NOT exist - should return an error message with the passed id", async () => {
     // Arrange
     const mockedId = "1242323";
@@ -51,6 +52,7 @@ describe("updateTicket()", () => {
     // Assert
     expect(res).toEqual(expectedResult);
   });
+
   test("passed broken request body - should return an error message with the passed body", async () => {
     // Arrange
     const mockedOriginalBody = {

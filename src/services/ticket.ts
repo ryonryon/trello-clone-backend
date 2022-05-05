@@ -1,4 +1,3 @@
-import { FastifyReply, FastifyRequest } from "fastify";
 import { Ticket } from "../entities";
 
 /**
@@ -42,24 +41,7 @@ async function updateTicket(originalTicket: Ticket, updateRequestTicket: Partial
   return resultTicket;
 }
 
-export async function editTicketById(
-  req: FastifyRequest<{
-    Params: { ticketId: string };
-    Body: Ticket;
-  }>,
-  res: FastifyReply,
-): Promise<Ticket> {
-  const ticketIdQuery = req.params.ticketId;
-  const editRequestBody = req.body;
-
-  const retrievedTicket = await getTicketById(ticketIdQuery);
-  const updatedTicket = await updateTicket(retrievedTicket, editRequestBody);
-
-  return res.send(updatedTicket);
-}
-
 export default {
   getTicketById,
   updateTicket,
-  editTicketById,
 };

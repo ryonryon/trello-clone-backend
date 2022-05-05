@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 
+import { project } from "../services";
 import { Project } from "../entities";
-import { project } from "../service";
 
 async function getProjectById(
   req: FastifyRequest<{
@@ -21,7 +21,13 @@ async function editProjectById(
   }>,
   res: FastifyReply,
 ) {
-  return project.editProjectById(req, res);
+  const projectIdQuery = req.params.projectId;
+  const editRequestBody = req.body;
+
+  const retrievedProject = await project.getProjectById(projectIdQuery);
+  const updatedProject = await project.updateProject(retrievedProject, editRequestBody);
+
+  return res.send(updatedProject);
 }
 
 export default { getProjectById, editProjectById };

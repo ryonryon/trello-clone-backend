@@ -1,4 +1,3 @@
-import { FastifyReply, FastifyRequest } from "fastify";
 import { Project } from "../entities";
 
 /**
@@ -42,24 +41,4 @@ async function updateProject(originalProject: Project, updateRequestProject: Par
   return resultProject;
 }
 
-async function editProjectById(
-  req: FastifyRequest<{
-    Params: { projectId: string };
-    Body: Project;
-  }>,
-  res: FastifyReply,
-): Promise<Project> {
-  const projectIdQuery = req.params.projectId;
-  const editRequestBody = req.body;
-
-  const retrievedProject = await getProjectById(projectIdQuery);
-  const updatedProject = await updateProject(retrievedProject, editRequestBody);
-
-  return res.send(updatedProject);
-}
-
-export default {
-  getProjectById,
-  updateProject,
-  editProjectById,
-};
+export default { getProjectById, updateProject };

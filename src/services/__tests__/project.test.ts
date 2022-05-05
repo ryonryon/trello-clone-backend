@@ -1,6 +1,6 @@
 import { build } from "../../../tests/helper";
 import { Project } from "../../entities";
-import project from "../project";
+import { project } from "../../services";
 
 // make a connection to real server
 build();
