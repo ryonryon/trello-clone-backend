@@ -15,7 +15,7 @@ const initializeServer = () => {
   server.get("/projects/:projectId", project);
 
   // ticket
-  server.put("/tickets/:ticketId", editTicket);
+  server.put("/tickets/:ticketId", ticket.editTicket);
 
   server.listen(5030, (err, address) => {
     if (err) {

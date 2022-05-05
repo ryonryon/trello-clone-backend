@@ -1,12 +1,18 @@
 import { FastifyRequest, FastifyReply } from "fastify";
+
+import { Ticket } from "../entities";
 import { editTicketById } from "../service/ticket";
 
-export default async function editTicket(
+export async function editTicket(
   req: FastifyRequest<{
     Params: { ticketId: string };
-    Body: { name: string };
+    Body: Ticket;
   }>,
   res: FastifyReply,
 ) {
   return editTicketById(req, res);
 }
+
+export default {
+  editTicket,
+};
