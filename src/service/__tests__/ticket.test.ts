@@ -62,7 +62,7 @@ describe("updateTicket()", () => {
     const mockedRequestBody = {
       crazyKey: "Broken broken",
     } as unknown as Ticket;
-    const expectedErrorMessage = 'Could not update the ticket with the request {"crazyKey":"Broken broken"}';
+    const expectedErrorMessage = 'Could not update the ticket with the request body: {"crazyKey":"Broken broken"}';
 
     // Act
     await expect(ticket.updateTicket(mockedOriginalBody, mockedRequestBody)).rejects.toThrow(expectedErrorMessage);
