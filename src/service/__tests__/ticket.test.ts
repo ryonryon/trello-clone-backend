@@ -1,6 +1,6 @@
 import { build } from "../../../tests/helper";
 import { Ticket } from "../../entities";
-import { getTicketById, updateTicket } from "../ticket";
+import ticket from "../ticket";
 
 // make a connection to real server
 build();
@@ -11,7 +11,7 @@ describe("getTicketById()", () => {
     const mockedId = "1";
 
     // Act
-    const res = await getTicketById("1");
+    const res = await ticket.getTicketById("1");
 
     // Assert
     expect(res.id).toEqual(Number(mockedId));
@@ -22,7 +22,7 @@ describe("getTicketById()", () => {
     const expectedErrorMessage = `Ticket not found for id: ${mockedId}`;
 
     // Act/Assert
-    await expect(getTicketById(mockedId)).rejects.toThrow(expectedErrorMessage);
+    await expect(ticket.getTicketById(mockedId)).rejects.toThrow(expectedErrorMessage);
   });
 });
 
@@ -46,7 +46,7 @@ describe("updateTicket()", () => {
     };
 
     // Act
-    const res = await updateTicket(mockedOriginalBody, mockedRequestBody);
+    const res = await ticket.updateTicket(mockedOriginalBody, mockedRequestBody);
 
     // Assert
     expect(res).toEqual(expectedResult);
@@ -65,6 +65,6 @@ describe("updateTicket()", () => {
     const expectedErrorMessage = 'Could not update the ticket with the request {"crazyKey":"Broken broken"}';
 
     // Act
-    await expect(updateTicket(mockedOriginalBody, mockedRequestBody)).rejects.toThrow(expectedErrorMessage);
+    await expect(ticket.updateTicket(mockedOriginalBody, mockedRequestBody)).rejects.toThrow(expectedErrorMessage);
   });
 });
