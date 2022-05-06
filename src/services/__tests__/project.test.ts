@@ -1,70 +1,69 @@
 import { build } from "../../../tests/helper";
-import { Ticket } from "../../entities";
-import ticket from "../ticket";
+import { Project } from "../../entities";
+import { project } from "../../services";
 
 // make a connection to real server
 build();
 
-describe("getTicketById()", () => {
-  test("passed id that exists - should return a ticket with the passed id", async () => {
+describe("getProjectById()", () => {
+  test("passed id that exists - should return a project with the passed id", async () => {
     // Arrange
     const mockedId = "1";
 
     // Act
-    const res = await ticket.getTicketById("1");
+    const res = await project.getProjectById("1");
 
     // Assert
     expect(res.id).toEqual(Number(mockedId));
   });
+
   test("passed id that DOES NOT exist - should return an error message with the passed id", async () => {
     // Arrange
     const mockedId = "1242323";
-    const expectedErrorMessage = `Ticket not found for id: ${mockedId}`;
+    const expectedErrorMessage = `Project not found for id: ${mockedId}`;
 
     // Act/Assert
-    await expect(ticket.getTicketById(mockedId)).rejects.toThrow(expectedErrorMessage);
+    await expect(project.getProjectById(mockedId)).rejects.toThrow(expectedErrorMessage);
   });
 });
 
-describe("updateTicket()", () => {
+describe("updateProject()", () => {
   test("passed proper request body - should return an updated body", async () => {
     // Arrange
     const mockedOriginalBody = {
       id: 1,
       name: "Mocked name value",
-      description: "This is a test ticket",
-      sort: 1,
-    } as Ticket;
+      description: "This is a test project",
+    } as Project;
     const mockedRequestBody = {
       name: "Test has been successed",
     };
     const expectedResult = {
       id: 1,
       name: mockedRequestBody.name,
-      description: "This is a test ticket",
-      sort: 1,
+      description: "This is a test project",
     };
 
     // Act
-    const res = await ticket.updateTicket(mockedOriginalBody, mockedRequestBody);
+    const res = await project.updateProject(mockedOriginalBody, mockedRequestBody);
 
     // Assert
     expect(res).toEqual(expectedResult);
   });
+
   test("passed broken request body - should return an error message with the passed body", async () => {
     // Arrange
     const mockedOriginalBody = {
       id: 1,
       name: "Mocked name value",
-      description: "This is a test ticket",
-      sort: 1,
-    } as Ticket;
+      description: "This is a test project",
+    } as Project;
     const mockedRequestBody = {
       crazyKey: "Broken broken",
-    } as unknown as Ticket;
-    const expectedErrorMessage = 'Could not update the ticket with the request body: {"crazyKey":"Broken broken"}';
+    } as unknown as Project;
+    const expectedErrorMessage = 'Could not update the project with the request body: {"crazyKey":"Broken broken"}';
 
     // Act
-    await expect(ticket.updateTicket(mockedOriginalBody, mockedRequestBody)).rejects.toThrow(expectedErrorMessage);
+    await expect(project.updateProject(mockedOriginalBody, mockedRequestBody)).rejects.toThrow(expectedErrorMessage);
   });
 });

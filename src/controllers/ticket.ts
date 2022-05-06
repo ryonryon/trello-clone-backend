@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 
 import { Ticket } from "../entities";
-import { editTicketById } from "../service/ticket";
+import { ticket } from "../services";
 
 export async function editTicket(
   req: FastifyRequest<{
@@ -10,7 +10,13 @@ export async function editTicket(
   }>,
   res: FastifyReply,
 ) {
-  return editTicketById(req, res);
+  const ticketIdQuery = req.params.ticketId;
+  const editRequestBody = req.body;
+
+  const retrievedTicket = await ticket.getTicketById(ticketIdQuery);
+  const updatedTicket = await ticket.updateTicket(retrievedTicket, editRequestBody);
+
+  return res.send(updatedTicket);
 }
 
 export default {
