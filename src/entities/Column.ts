@@ -25,7 +25,7 @@ export default class Column extends BaseEntity {
   })
   sort!: number;
 
-  @ManyToOne(() => Project, (project) => project.columns, {})
+  @ManyToOne(() => Project, (project) => project.columns, { onDelete: "CASCADE" })
   @JoinColumn({ name: "project_id" })
   project!: Project;
 
