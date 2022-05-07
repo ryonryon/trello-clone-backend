@@ -13,9 +13,9 @@ export function build(): FastifyInstance {
 
   // Set up DB with mocked environment valuables.
   beforeAll(async () => {
-    process.env.POSTGRES_USER = "root";
-    process.env.POSTGRES_PASSWORD = "root";
-    process.env.POSTGRES_DB = "trello-clone";
+    process.env.POSTGRES_USER = "test";
+    process.env.POSTGRES_PASSWORD = "test";
+    process.env.POSTGRES_DB = "trello-clone-test";
 
     await initializeDatabase();
   });
