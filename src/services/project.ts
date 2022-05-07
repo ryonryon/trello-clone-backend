@@ -1,7 +1,26 @@
 import { Project } from "../entities";
 
 /**
- * Retrieves a project from DB. It returns error either;
+ * Retrieves a project meta data from DB. It returns error either;
+ * 1. Passed project id is invalid - not convertible to Number
+ * 2. Project couldn't be found by the passed id
+ */
+async function getProjectMetaById(projectId: string): Promise<Project> {
+  const projectIdQuery = Number(projectId);
+
+  if (isNaN(projectIdQuery) || !projectIdQuery) throw new Error(`Invalid project id: ${projectIdQuery}`);
+
+  const project = await Project.findOneBy({
+    id: projectIdQuery,
+  });
+
+  if (!project) throw new Error(`Project not found for id: ${projectIdQuery}`);
+
+  return project;
+}
+
+/**
+ * Retrieves a project data with columns and tickets from DB. It returns error either;
  * 1. Passed project id is invalid - not convertible to Number
  * 2. Project couldn't be found by the passed id
  */
@@ -10,8 +29,23 @@ async function getProjectById(projectId: string): Promise<Project> {
 
   if (isNaN(projectIdQuery) || !projectIdQuery) throw new Error(`Invalid project id: ${projectIdQuery}`);
 
-  const project = await Project.findOneBy({
-    id: projectIdQuery,
+  const project = await Project.findOne({
+    where: {
+      id: projectIdQuery,
+    },
+    relations: {
+      columns: {
+        tickets: true,
+      },
+    },
+    order: {
+      columns: {
+        id: "ASC",
+        tickets: {
+          id: "ASC",
+        },
+      },
+    },
   });
 
   if (!project) throw new Error(`Project not found for id: ${projectIdQuery}`);
@@ -41,4 +75,4 @@ async function updateProject(originalProject: Project, updateRequestProject: Par
   return resultProject;
 }
 
-export default { getProjectById, updateProject };
+export default { getProjectById, getProjectMetaById, updateProject };

@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Column as ORMColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column as ORMColumn, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import ColumnType from "./Column";
 import Ticket from "./Ticket";
 

@@ -5,13 +5,13 @@ import { project } from "../../services";
 // make a connection to real server
 build();
 
-describe("getProjectById()", () => {
+describe("getProjectMetaById()", () => {
   test("passed id that exists - should return a project with the passed id", async () => {
     // Arrange
     const mockedId = "1";
 
     // Act
-    const res = await project.getProjectById("1");
+    const res = await project.getProjectMetaById("1");
 
     // Assert
     expect(res.id).toEqual(Number(mockedId));
@@ -23,7 +23,7 @@ describe("getProjectById()", () => {
     const expectedErrorMessage = `Project not found for id: ${mockedId}`;
 
     // Act/Assert
-    await expect(project.getProjectById(mockedId)).rejects.toThrow(expectedErrorMessage);
+    await expect(project.getProjectMetaById(mockedId)).rejects.toThrow(expectedErrorMessage);
   });
 });
 
