@@ -1,9 +1,47 @@
 import { build } from "../../../tests/helper";
-import { Ticket } from "../../entities";
+import { Column, Project, Ticket, TicketInput } from "../../entities";
 import ticket from "../ticket";
 
 // make a connection to real server
 build();
+
+describe("createTicket()", () => {
+  test.todo("passed proper request body - should return an created body");
+
+  test("passed body with name undefined - should return an error message that name is required", async () => {
+    // Arrange
+    const mockedRequestBody = {
+      name: undefined,
+      description: "This is a test ticket",
+      sort: 1,
+    } as unknown as TicketInput;
+    const project = new Project();
+    project.id = 1;
+    const column = new Column();
+    column.id = 1;
+    const expectedErrorMessage = "name is required to create ticket";
+
+    // Act
+    await expect(ticket.createTicket(mockedRequestBody, project, column)).rejects.toThrow(expectedErrorMessage);
+  });
+
+  test("passed body with empty name - should return an error message that name is required", async () => {
+    // Arrange
+    const mockedRequestBody = {
+      name: "",
+      description: "This is a test ticket",
+      sort: 1,
+    } as unknown as TicketInput;
+    const project = new Project();
+    project.id = 1;
+    const column = new Column();
+    column.id = 1;
+    const expectedErrorMessage = "name is required to create ticket";
+
+    // Act
+    await expect(ticket.createTicket(mockedRequestBody, project, column)).rejects.toThrow(expectedErrorMessage);
+  });
+});
 
 describe("getTicketById()", () => {
   test("passed id that exists - should return a ticket with the passed id", async () => {

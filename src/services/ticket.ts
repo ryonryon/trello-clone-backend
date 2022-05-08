@@ -1,4 +1,22 @@
-import { Ticket } from "../entities";
+import { Column, Project, Ticket, TicketInput } from "../entities";
+
+/**
+ * create ticket with requested one. It'd return an error is request contains unexpected kay.
+ * @param createRequestTicket - Request body which is in a shape of `Ticket`
+ * @param project - Request body which is in a shape of `Project`
+ * @param column - Request body which is in a shape of `Column`
+ * @returns Ticket
+ */
+async function createTicket(createRequestTicket: Partial<TicketInput>, project: Project, column: Column) {
+  if (!createRequestTicket.name || !createRequestTicket.name.length)
+    throw new Error("name is required to create ticket");
+
+  return await Ticket.save({
+    ...createRequestTicket,
+    project,
+    column,
+  });
+}
 
 /**
  * Retrieves a ticket from DB. It returns error either;
@@ -42,6 +60,7 @@ async function updateTicket(originalTicket: Ticket, updateRequestTicket: Partial
 }
 
 export default {
+  createTicket,
   getTicketById,
   updateTicket,
 };
