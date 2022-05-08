@@ -16,17 +16,28 @@ describe("/projects/:projectId", () => {
       await mockProject.remove();
     });
 
-    test("Pass existing projectId - it should successfully fetch existing project", async () => {
+    test("Passed appropriate query - it should successfully fetch existing project", async () => {
       const res = await app.inject({
         method: "get",
-        url: `/project/${mockProject.id}`,
+        url: `/projects/${mockProject.id}`,
         payload: {},
       });
 
       expect(res).toBe(mockProject);
     });
 
-    test.todo("Pass not existing projectId - it should successfully fetch existing project");
+    test("Passed id that DOES NOT exist - it should successfully fetch existing project", async () => {
+      const expectedErrorMessage =
+        '{"statusCode":500,"error":"Internal Server Error","message":"Project not found for id: 99999999"}';
+      const res = await app.inject({
+        method: "get",
+        url: `/projects/99999999`,
+        payload: {},
+      });
+
+      expect(res.statusCode).toEqual(500);
+      expect(res.body).toContain(expectedErrorMessage);
+    });
   });
 
   describe("put project", () => {
