@@ -4,6 +4,14 @@ import { column } from "..";
 // make a connection to real server
 build();
 
+describe("createColumn()", () => {
+  test.todo("passed proper request body - should return an created body");
+
+  test.todo("passed body with name undefined - should return an error message that name is required");
+
+  test.todo("passed body with empty name - should return an error message that name is required");
+});
+
 describe("geColumnById()", () => {
   test("passed id that exists - should return a column with the passed id", async () => {
     // Arrange
