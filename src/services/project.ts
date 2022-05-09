@@ -5,7 +5,7 @@ import { Project } from "../entities";
  * 1. Passed project id is invalid - not convertible to Number
  * 2. Project couldn't be found by the passed id
  */
-async function getProjectById(projectId: string): Promise<Project> {
+export async function getProjectById(projectId: string): Promise<Project> {
   const projectIdQuery = Number(projectId);
 
   if (isNaN(projectIdQuery) || !projectIdQuery) throw new Error(`Invalid project id: ${projectIdQuery}`);
@@ -20,12 +20,26 @@ async function getProjectById(projectId: string): Promise<Project> {
 }
 
 /**
+ * Retrieves a count of columns in project from DB.
+ */
+export async function getProjectColumnCount(projectId: number): Promise<number> {
+  return await Project.count({
+    relations: {
+      columns: true,
+    },
+    where: {
+      id: projectId,
+    },
+  });
+}
+
+/**
  * Updates passed project with requested one. It'd return an error is request contains unexpected kay.
  * @param originalProject - Original project to be updated. Should includes all information of a project
  * @param updateRequestProject - Request body which is in a shape of `Project`
  * @returns Project
  */
-async function updateProject(originalProject: Project, updateRequestProject: Partial<Project>) {
+export async function updateProject(originalProject: Project, updateRequestProject: Partial<Project>) {
   // Check if there's any unexpected key included in the request
   const isAllRequestKeysAssignable = Object.keys(updateRequestProject).some((key) => {
     return Object.keys(originalProject).includes(key);
@@ -41,4 +55,4 @@ async function updateProject(originalProject: Project, updateRequestProject: Par
   return resultProject;
 }
 
-export default { getProjectById, updateProject };
+export default { getProjectById, getProjectColumnCount, updateProject };

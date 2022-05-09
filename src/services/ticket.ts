@@ -9,7 +9,7 @@ import { Column, Project, Ticket, TicketInput } from "../entities";
  */
 async function createTicket(createRequestTicket: Partial<TicketInput>, project: Project, column: Column) {
   if (!createRequestTicket.name || !createRequestTicket.name.length)
-    throw new Error("name is required to create ticket");
+    throw new Error("name is required to create ticketX");
 
   return await Ticket.save({
     ...createRequestTicket,

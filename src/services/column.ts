@@ -1,4 +1,25 @@
-import { Column } from "../entities";
+import { Column, ColumnInput, Project } from "../entities";
+import { getProjectColumnCount } from "./project";
+
+/**
+ * create column with requested one. It'd return an error is request contains unexpected kay.
+ * @param createRequestColumn - Request body which is in a shape of `Column`
+ * @param project - Request body which is in a shape of `Project`
+ * @param column - Request body which is in a shape of `Column`
+ * @returns Column
+ */
+async function createColumn(createRequestColumn: Partial<ColumnInput>, project: Project) {
+  if (!createRequestColumn.name || !createRequestColumn.name.length)
+    throw new Error("name is required to create column");
+
+  const sort = (await getProjectColumnCount(project.id)) + 1;
+
+  return await Column.save({
+    name: createRequestColumn.name,
+    sort,
+    project,
+  });
+}
 
 /**
  * Retrieves a column from DB. It returns error either;
@@ -19,4 +40,4 @@ async function getColumnById(columnId: string): Promise<Column> {
   return column;
 }
 
-export default { getColumnById };
+export default { createColumn, getColumnById };

@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
-import { project, projects, ticket } from "./controllers";
+import { column, project, projects, ticket } from "./controllers";
 
 const initializeServer = () => {
   const server = Fastify();
@@ -11,7 +11,10 @@ const initializeServer = () => {
 
   // project
   server.get("/projects", projects.getProjects);
-  server.put("/project/:projectId", project.editProjectById);
+  server.put("/projects/:projectId", project.editProjectById);
+
+  // column
+  server.post("/projects/:projectId/columns/:columnId", column.createColumn);
 
   // ticket
   server.post("/projects/:projectId/columns/:columnId/tickets", ticket.createTicket);
