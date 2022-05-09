@@ -20,11 +20,11 @@ export default class Ticket extends BaseEntity {
   })
   sort!: number;
 
-  @ManyToOne(() => Project, (project) => project.tickets)
+  @ManyToOne(() => Project, (project) => project.tickets, { onDelete: "CASCADE" })
   @JoinColumn({ name: "project_id" })
   project!: Project;
 
-  @ManyToOne(() => Column, (column) => column.tickets)
+  @ManyToOne(() => Column, (column) => column.tickets, { onDelete: "CASCADE" })
   @JoinColumn({ name: "column_id" })
   column!: Column;
 }

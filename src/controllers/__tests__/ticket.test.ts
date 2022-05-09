@@ -1,4 +1,6 @@
 import { build } from "../../../tests/helper";
+import { createTestTicket } from "../../../tests/helper/utils";
+import { Ticket } from "../../entities";
 
 const app = build();
 
@@ -105,6 +107,16 @@ describe("Tickets", () => {
   });
 
   describe("editTicket", () => {
+    let mockTicket: Ticket;
+
+    beforeAll(async () => {
+      mockTicket = await createTestTicket();
+    });
+
+    afterAll(async () => {
+      await mockTicket.remove();
+    });
+
     test("Passed appropriate body and query - it should successfully edit existing ticket", async () => {
       const mockName = "this is mocked name";
       const res = await app.inject({
@@ -141,7 +153,7 @@ describe("Tickets", () => {
       const mockName = 212;
       const res = await app.inject({
         method: "put",
-        url: "/tickets/1",
+        url: `/tickets/${mockTicket.id}`,
         payload: {
           crazyKey: mockName,
         },

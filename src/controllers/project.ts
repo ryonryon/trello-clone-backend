@@ -9,9 +9,11 @@ async function getProjectById(
   }>,
   res: FastifyReply,
 ) {
-  const project = await Project.findOneBy({ id: Number(req.params.projectId) });
+  const projectIdQuery = req.params.projectId;
 
-  return res.send(project);
+  const retrievedProject = await project.getProjectById(projectIdQuery);
+
+  return res.send(retrievedProject);
 }
 
 async function editProjectById(
@@ -24,7 +26,7 @@ async function editProjectById(
   const projectIdQuery = req.params.projectId;
   const editRequestBody = req.body;
 
-  const retrievedProject = await project.getProjectById(projectIdQuery);
+  const retrievedProject = await project.getProjectMetaById(projectIdQuery);
   const updatedProject = await project.updateProject(retrievedProject, editRequestBody);
 
   return res.send(updatedProject);
