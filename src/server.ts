@@ -14,6 +14,7 @@ const initializeServer = () => {
   server.put("/projects/:projectId", project.editProjectById);
 
   // ticket
+  server.post("/projects/:projectId/columns/:columnId/tickets", ticket.createTicket);
   server.put("/tickets/:ticketId", ticket.editTicket);
 
   server.listen(5030, (err, address) => {

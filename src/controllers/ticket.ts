@@ -1,7 +1,25 @@
 import { FastifyRequest, FastifyReply } from "fastify";
 
-import { Ticket } from "../entities";
-import { ticket } from "../services";
+import { Ticket, TicketInput } from "../entities";
+import { column, project, ticket } from "../services";
+
+export async function createTicket(
+  req: FastifyRequest<{
+    Params: { projectId: string; columnId: string };
+    Body: Partial<TicketInput>;
+  }>,
+  res: FastifyReply,
+) {
+  const projectId = req.params.projectId;
+  const columnId = req.params.columnId;
+  const createRequestBody = req.body;
+
+  const retrievedProject = await project.getProjectById(projectId);
+  const retrievedColumn = await column.getColumnById(columnId);
+  const createdTicket = await ticket.createTicket(createRequestBody, retrievedProject, retrievedColumn);
+
+  return res.send(createdTicket);
+}
 
 export async function editTicket(
   req: FastifyRequest<{
@@ -20,5 +38,6 @@ export async function editTicket(
 }
 
 export default {
+  createTicket,
   editTicket,
 };
