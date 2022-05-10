@@ -1,5 +1,6 @@
 import { FastifyInstance } from "fastify";
-import { initializeDatabase } from "../../src/database";
+import { DataSource } from "typeorm";
+import dataSource from "../../src/database/createConnection";
 import { initializeServer } from "../../src/server";
 
 /**
@@ -10,6 +11,7 @@ export function build(): FastifyInstance {
   // Set up server. This instance will be the return
   // for jest to access and manipulate its APIs
   const app = initializeServer();
+  let database: DataSource;
 
   // Set up DB with mocked environment valuables.
   beforeAll(async () => {
@@ -17,10 +19,13 @@ export function build(): FastifyInstance {
     process.env.POSTGRES_PASSWORD = "test";
     process.env.POSTGRES_DB = "trello-clone-test";
 
-    await initializeDatabase();
+    database = dataSource();
+    await database.initialize();
   });
 
+  // Clean up both server and database
   afterAll(async () => {
+    await database.destroy();
     await app.close();
   });
 

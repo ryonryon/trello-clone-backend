@@ -1,6 +1,6 @@
 import { build } from "../../../tests/helper";
-import { createTestTicket } from "../../../tests/helper/utils";
-import { Ticket } from "../../entities";
+import { createTestProject } from "../../../tests/helper/utils";
+import { Project } from "../../entities";
 
 const app = build();
 
@@ -106,21 +106,25 @@ describe("createTicket", () => {
 });
 
 describe("editTicket", () => {
-  let mockTicket: Ticket;
+  let mockedProject: Project;
 
   beforeAll(async () => {
-    mockTicket = await createTestTicket();
+    mockedProject = await createTestProject();
   });
 
   afterAll(async () => {
-    await mockTicket.remove();
+    await mockedProject.remove();
   });
 
   test("Passed appropriate body and query - it should successfully edit existing ticket", async () => {
     const mockName = "this is mocked name";
+    const mockedProjectId = mockedProject.id;
+    const mockedColumnId = mockedProject.columns[0].id;
+    const mockedTicketId = mockedProject.tickets[0].id;
+
     const res = await app.inject({
       method: "put",
-      url: "/tickets/1",
+      url: `/projects/${mockedProjectId}/columns/${mockedColumnId}/tickets/${mockedTicketId}`,
       payload: {
         name: mockName,
       },
@@ -134,9 +138,12 @@ describe("editTicket", () => {
     const expectedErrorMessage =
       '{"statusCode":500,"error":"Internal Server Error","message":"Invalid ticket id: NaN"}';
     const mockName = "test";
+    const mockedProjectId = mockedProject.id;
+    const mockedColumnId = mockedProject.columns[0].id;
+
     const res = await app.inject({
       method: "put",
-      url: "/tickets/a",
+      url: `/projects/${mockedProjectId}/columns/${mockedColumnId}/tickets/a`,
       payload: {
         name: mockName,
       },
@@ -150,9 +157,13 @@ describe("editTicket", () => {
     const expectedErrorMessage =
       '{"statusCode":500,"error":"Internal Server Error","message":"Could not update the ticket with the request body: {\\"crazyKey\\":212}"}';
     const mockName = 212;
+    const mockedProjectId = mockedProject.id;
+    const mockedColumnId = mockedProject.columns[0].id;
+    const mockedTicketId = mockedProject.tickets[0].id;
+
     const res = await app.inject({
       method: "put",
-      url: `/tickets/${mockTicket.id}`,
+      url: `/projects/${mockedProjectId}/columns/${mockedColumnId}/tickets/${mockedTicketId}`,
       payload: {
         crazyKey: mockName,
       },
