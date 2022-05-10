@@ -2,7 +2,11 @@ import { DataSource } from "typeorm";
 
 import * as entities from "../entities";
 
-export default async (): Promise<DataSource> => {
+/**
+ * Returns an instance of DataSource object which contains
+ * functions to establish/destroy connection between server and the DB
+ */
+export default (): DataSource => {
   const dataSource = new DataSource({
     type: "postgres",
     host: "localhost",
@@ -14,5 +18,5 @@ export default async (): Promise<DataSource> => {
     synchronize: true,
   });
 
-  return await dataSource.initialize();
+  return dataSource;
 };
