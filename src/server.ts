@@ -20,6 +20,7 @@ const initializeServer = () => {
   // ticket
   server.post("/projects/:projectId/columns/:columnId/tickets", ticket.createTicket);
   server.put("/tickets/:ticketId", ticket.editTicket);
+  server.delete("/projects/:projectId/columns/:columnId/tickets/:ticketId", ticket.deleteTicket);
 
   server.listen(5030, (err, address) => {
     if (err) {

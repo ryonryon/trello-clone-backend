@@ -44,6 +44,12 @@ describe("createTicket()", () => {
   });
 });
 
+describe("deleteTicketById()", () => {
+  test.todo("Passed proper request body - It successfully delete the entity and it should return an deleted body");
+
+  test.todo("Passed id that DOES NOT exist - should return an error message with the passed id");
+});
+
 describe("getTicketById()", () => {
   let mockTicket: Ticket;
 

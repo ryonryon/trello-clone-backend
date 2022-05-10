@@ -105,6 +105,14 @@ describe("createTicket", () => {
   });
 });
 
+describe("deleteTicket", () => {
+  test.todo("Passed appropriate query - it should successfully delete existing ticket");
+
+  test.todo("Pass broken ticketId - it should return error that indicates ticketId is invalid");
+
+  test.todo("Pass broken query - it should return error that indicates that ticket not found");
+});
+
 describe("editTicket", () => {
   let mockTicket: Ticket;
 
