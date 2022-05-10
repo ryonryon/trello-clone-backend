@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nodemon src/index.ts",
     "test": "jest",
+    "test-warnings": "jest --detectOpenHandles",
     "test:watch": "jest --watch",
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"

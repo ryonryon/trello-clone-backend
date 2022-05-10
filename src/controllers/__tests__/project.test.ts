@@ -16,13 +16,27 @@ describe("get project", () => {
   });
 
   test("Passed appropriate query - it should successfully fetch existing project", async () => {
+    // Since mockProject doesn't align to response of the endpoint
+    // This variable is to set the same shape as the response body
+    const expectedReturn = {
+      id: mockProject.id,
+      name: mockProject.name,
+      description: mockProject.description,
+      columns: [
+        { ...mockProject.columns[0], tickets: [] },
+        { ...mockProject.columns[1], tickets: [] },
+      ],
+    };
+
+    // act
     const res = await app.inject({
       method: "get",
       url: `/projects/${mockProject.id}`,
       payload: {},
     });
 
-    expect(res).toBe(mockProject);
+    // assign
+    expect(JSON.parse(res.body)).toEqual(expectedReturn);
   });
 
   test("Passed id that DOES NOT exist - it should successfully fetch existing project", async () => {
