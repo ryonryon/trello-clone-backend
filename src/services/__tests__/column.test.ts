@@ -33,3 +33,11 @@ describe("geColumnById()", () => {
     await expect(column.getColumnById(mockedId)).rejects.toThrow(expectedErrorMessage);
   });
 });
+
+describe("updateColumn()", () => {
+  test.todo("passed proper request params and body - should return an updated body");
+
+  test.todo("passed body with name undefined - should return an error message that name is required");
+
+  test.todo("passed body with empty name - should return an error message that name is required");
+});

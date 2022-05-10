@@ -9,3 +9,11 @@ describe("createColumn", () => {
 
   test.todo("Pass broken body - it should return error that indicates passed body isn't appropriate");
 });
+
+describe("editColumnById", () => {
+  test.todo("Pass proper body - it should successfully edit existing column");
+
+  test.todo("Pass broken query - it should return error that indicates column not found");
+
+  test.todo("Pass broken body - it should return error that indicates passed body isn't appropriate");
+});

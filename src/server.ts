@@ -14,12 +14,12 @@ const initializeServer = () => {
   server.put("/projects/:projectId", project.editProjectById);
 
   // column
-
   server.post("/projects/:projectId/columns", column.createColumn);
+  server.put("/projects/:projectId/columns/:columnId", column.editColumnById);
 
   // ticket
   server.post("/projects/:projectId/columns/:columnId/tickets", ticket.createTicket);
-  server.put("/tickets/:ticketId", ticket.editTicket);
+  server.put("/projects/:projectId/columns/:columnId/tickets/:ticketId", ticket.editTicket);
 
   server.listen(5030, (err, address) => {
     if (err) {
