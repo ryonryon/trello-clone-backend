@@ -19,6 +19,23 @@ export async function createColumn(
   return res.send(createdTicket);
 }
 
+export async function editColumnById(
+  req: FastifyRequest<{
+    Params: { projectId: string; columnId: string };
+    Body: Partial<ColumnInput>;
+  }>,
+  res: FastifyReply,
+) {
+  const columnId = req.params.columnId;
+  const editRequestBody = req.body;
+
+  const retrievedColumn = await column.getColumnById(columnId);
+  const updatedColumn = await column.updateColumn(retrievedColumn, editRequestBody);
+
+  return res.send(updatedColumn);
+}
+
 export default {
   createColumn,
+  editColumnById,
 };

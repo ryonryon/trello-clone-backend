@@ -40,4 +40,20 @@ async function getColumnById(columnId: string): Promise<Column> {
   return column;
 }
 
-export default { createColumn, getColumnById };
+/**
+ * Updates passed column with requested one. It'd return an error if name is empty.
+ * @param originalColumn - Original column to be updated. Should includes all information of a column
+ * @param updateRequestColumn - Request body which is in a shape of `ColumnInput`
+ * @returns Column
+ */
+async function updateColumn(originalColumn: Column, { name }: Partial<ColumnInput>) {
+  if (name && !name.length) throw new Error("Column name must not be empty");
+
+  const updatedColumn = Object.assign(originalColumn, { name });
+
+  const resultColumn = await Column.save(updatedColumn);
+
+  return resultColumn;
+}
+
+export default { createColumn, getColumnById, updateColumn };
