@@ -21,6 +21,19 @@ export async function createTicket(
   return res.send(createdTicket);
 }
 
+export async function deleteTicket(
+  req: FastifyRequest<{
+    Params: { projectId: string; columnId: string; ticketId: string };
+  }>,
+  res: FastifyReply,
+) {
+  const ticketId = req.params.ticketId;
+
+  const deletedTicket = await ticket.deleteTicketById(ticketId);
+
+  return res.send(deletedTicket);
+}
+
 export async function editTicket(
   req: FastifyRequest<{
     Params: { ticketId: string };
@@ -39,5 +52,6 @@ export async function editTicket(
 
 export default {
   createTicket,
+  deleteTicket,
   editTicket,
 };

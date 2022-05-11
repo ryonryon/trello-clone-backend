@@ -19,6 +19,25 @@ async function createTicket(createRequestTicket: Partial<TicketInput>, project: 
 }
 
 /**
+ * Delete a ticket by ticketId. It returns error either;
+ * 1. Passed ticket id is invalid - not convertible to Number
+ * 2. Ticket couldn't be found by the passed id
+ */
+async function deleteTicketById(ticketId: string) {
+  const ticketIdQuery = Number(ticketId);
+
+  if (isNaN(ticketIdQuery) || !ticketIdQuery) throw new Error(`Invalid ticket id: ${ticketIdQuery}`);
+
+  const ticket = await Ticket.findOneBy({ id: ticketIdQuery });
+
+  if (!ticket) throw new Error(`Ticket not found for id: ${ticketIdQuery}`);
+
+  await ticket.remove();
+
+  return ticket;
+}
+
+/**
  * Retrieves a ticket from DB. It returns error either;
  * 1. Passed ticket id is invalid - not convertible to Number
  * 2. Ticket couldn't be found by the passed id
@@ -61,6 +80,7 @@ async function updateTicket(originalTicket: Ticket, updateRequestTicket: Partial
 
 export default {
   createTicket,
+  deleteTicketById,
   getTicketById,
   updateTicket,
 };
