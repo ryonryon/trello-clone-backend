@@ -23,14 +23,10 @@ async function createTicket(createRequestTicket: Partial<TicketInput>, project: 
  * 1. Passed ticket id is invalid - not convertible to Number
  * 2. Ticket couldn't be found by the passed id
  */
-async function deleteTicketById(ticketId: string) {
-  const ticketIdQuery = Number(ticketId);
+async function deleteTicketById(ticketId: number) {
+  const ticket = await Ticket.findOneBy({ id: ticketId });
 
-  if (isNaN(ticketIdQuery) || !ticketIdQuery) throw new Error(`Invalid ticket id: ${ticketIdQuery}`);
-
-  const ticket = await Ticket.findOneBy({ id: ticketIdQuery });
-
-  if (!ticket) throw new Error(`Ticket not found for id: ${ticketIdQuery}`);
+  if (!ticket) throw new Error(`Ticket not found for id: ${ticketId}`);
 
   await ticket.remove();
 
@@ -42,16 +38,12 @@ async function deleteTicketById(ticketId: string) {
  * 1. Passed ticket id is invalid - not convertible to Number
  * 2. Ticket couldn't be found by the passed id
  */
-async function getTicketById(ticketId: string): Promise<Ticket> {
-  const ticketIdQuery = Number(ticketId);
-
-  if (isNaN(ticketIdQuery) || !ticketIdQuery) throw new Error(`Invalid ticket id: ${ticketIdQuery}`);
-
+async function getTicketById(ticketId: number): Promise<Ticket> {
   const ticket = await Ticket.findOneBy({
-    id: ticketIdQuery,
+    id: ticketId,
   });
 
-  if (!ticket) throw new Error(`Ticket not found for id: ${ticketIdQuery}`);
+  if (!ticket) throw new Error(`Ticket not found for id: ${ticketId}`);
 
   return ticket;
 }

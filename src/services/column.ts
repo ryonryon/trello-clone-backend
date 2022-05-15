@@ -26,16 +26,12 @@ async function createColumn(createRequestColumn: Partial<ColumnInput>, project: 
  * 1. Passed column id is invalid - not convertible to Number
  * 2. Column couldn't be found by the passed id
  */
-async function getColumnById(columnId: string): Promise<Column> {
-  const columnIdQuery = Number(columnId);
-
-  if (isNaN(columnIdQuery) || !columnIdQuery) throw new Error(`Invalid column id: ${columnIdQuery}`);
-
+async function getColumnById(columnId: number): Promise<Column> {
   const column = await Column.findOneBy({
-    id: columnIdQuery,
+    id: columnId,
   });
 
-  if (!column) throw new Error(`Column not found for id: ${columnIdQuery}`);
+  if (!column) throw new Error(`Column not found for id: ${columnId}`);
 
   return column;
 }

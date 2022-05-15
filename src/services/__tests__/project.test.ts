@@ -28,7 +28,7 @@ describe("getProjectMetaById()", () => {
     const mockedId = mockProject.id;
 
     // Act
-    const res = await project.getProjectMetaById(mockProject.id.toString());
+    const res = await project.getProjectMetaById(mockProject.id);
 
     // Assert
     expect(res.id).toEqual(mockedId);
@@ -36,7 +36,7 @@ describe("getProjectMetaById()", () => {
 
   test("passed id that DOES NOT exist - should return an error message with the passed id", async () => {
     // Arrange
-    const mockedId = "1242323";
+    const mockedId = 1242323;
     const expectedErrorMessage = `Project not found for id: ${mockedId}`;
 
     // Act/Assert
@@ -60,7 +60,7 @@ describe("getProjectById()", () => {
     const mockedId = mockProject.id;
 
     // Act
-    const res = await project.getProjectMetaById(mockProject.id.toString());
+    const res = await project.getProjectMetaById(mockProject.id);
 
     // Assert
     expect(res.id).toEqual(mockedId);
@@ -68,7 +68,7 @@ describe("getProjectById()", () => {
 
   test("passed id that DOES NOT exist - should return an error message with the passed id", async () => {
     // Arrange
-    const mockedId = "1242323";
+    const mockedId = 1242323;
     const expectedErrorMessage = `Project not found for id: ${mockedId}`;
 
     // Act/Assert
