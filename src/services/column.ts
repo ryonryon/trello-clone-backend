@@ -1,5 +1,5 @@
 import { Column, ColumnInput, Project } from "../entities";
-import { getProjectColumnCount } from "./project";
+import { getProjectById, getProjectColumnCount } from "./project";
 
 /**
  * create column with requested one. It'd return an error is request contains unexpected kay.
@@ -52,4 +52,42 @@ async function updateColumn(originalColumn: Column, { name }: Partial<ColumnInpu
   return resultColumn;
 }
 
-export default { createColumn, getColumnById, updateColumn };
+/**
+ * Update columns sort in the given project.
+ * @param project - Project that has updating columns. project.columns are sorted by sort ascending
+ * @param column - columnId with target sort index
+ * @returns Project
+ * It returns error either;
+ * 1. Passed column id is invalid - not convertible to Number
+ * 2. Column couldn't be found by the passed id
+ */
+async function updateColumnsSort(project: Project, column: { columnId: number; sort: number }): Promise<Project> {
+  const columnId = column.columnId;
+  const sort = column.sort;
+  const columns = project.columns;
+
+  const targetColumn = columns.find((c) => c.id === columnId);
+  if (!targetColumn) throw new Error(`Column not found for id: ${columnId}`);
+
+  if (sort < 0 || columns.length <= sort)
+    throw new Error(`sort: ${sort} must be 0 or more and less than length of project.colmns`);
+
+  targetColumn.sort = sort;
+  await targetColumn.save();
+
+  const columnsWithoutTarget = columns.filter((c) => c.id !== columnId);
+
+  for (let i = 0; i < columnsWithoutTarget.length; i++) {
+    if (i < sort) {
+      columns[i].sort = i;
+    } else {
+      columns[i].sort = i + 1;
+    }
+
+    await columns[i].save();
+  }
+
+  return getProjectById(project.id.toString());
+}
+
+export default { createColumn, getColumnById, updateColumn, updateColumnsSort };
