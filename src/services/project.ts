@@ -17,12 +17,39 @@ export async function getProjectColumnCount(projectId: number): Promise<number> 
   });
 }
 
+async function getProjectColumns(projectId: string): Promise<Project> {
+  const projectIdQuery = Number(projectId);
+
+  if (isNaN(projectIdQuery) || !projectIdQuery) throw new Error(`Invalid project id: ${projectIdQuery}`);
+
+  const project = await Project.findOne({
+    where: {
+      id: projectIdQuery,
+    },
+    relations: {
+      columns: {
+        id: true,
+        sort: true,
+      },
+    },
+    order: {
+      columns: {
+        sort: "ASC",
+      },
+    },
+  });
+
+  if (!project) throw new Error(`Project not found for id: ${projectId}`);
+
+  return project;
+}
+
 /**
  * Retrieves a project data with columns and tickets from DB. It returns error either;
  * 1. Passed project id is invalid - not convertible to Number
  * 2. Project couldn't be found by the passed id
  */
-async function getProjectById(projectId: string): Promise<Project> {
+export async function getProjectById(projectId: string): Promise<Project> {
   const projectIdQuery = Number(projectId);
 
   if (isNaN(projectIdQuery) || !projectIdQuery) throw new Error(`Invalid project id: ${projectIdQuery}`);
@@ -92,4 +119,4 @@ async function updateProject(originalProject: Project, updateRequestProject: Par
   return resultProject;
 }
 
-export default { getProjectColumnCount, getProjectById, getProjectMetaById, updateProject };
+export default { getProjectColumnCount, getProjectColumns, getProjectById, getProjectMetaById, updateProject };

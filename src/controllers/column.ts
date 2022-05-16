@@ -35,7 +35,27 @@ export async function editColumnById(
   return res.send(updatedColumn);
 }
 
+export async function updateColumnsSort(
+  req: FastifyRequest<{
+    Params: { projectId: string };
+    Body: {
+      columnId: number;
+      sort: number;
+    };
+  }>,
+  res: FastifyReply,
+) {
+  const projectId = req.params.projectId;
+  const editRequestBody = req.body;
+
+  const retrievedProjectColumns = await project.getProjectColumns(projectId);
+  const updatedProjectColumns = await column.updateColumnsSort(retrievedProjectColumns, editRequestBody);
+
+  return res.send(updatedProjectColumns);
+}
+
 export default {
   createColumn,
   editColumnById,
+  updateColumnsSort,
 };

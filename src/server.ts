@@ -15,7 +15,8 @@ const initializeServer = () => {
 
   // column
   server.post("/projects/:projectId/columns", column.createColumn);
-  server.put("/projects/:projectId/columns/:columnId", column.editColumnById);
+  server.put("/projects/:projectId/columns", column.updateColumnsSort);
+  server.patch("/projects/:projectId/columns/:columnId", column.editColumnById);
 
   // ticket
   server.post("/projects/:projectId/columns/:columnId/tickets", ticket.createTicket);
