@@ -10,9 +10,12 @@ export async function createTicket(
   }>,
   res: FastifyReply,
 ) {
-  const projectId = req.params.projectId;
-  const columnId = req.params.columnId;
+  const projectId = Number(req.params.projectId);
+  const columnId = Number(req.params.columnId);
   const createRequestBody = req.body;
+
+  if (isNaN(projectId) || !projectId) throw new Error(`Invalid project id: ${projectId}`);
+  if (isNaN(columnId) || !columnId) throw new Error(`Invalid column id: ${columnId}`);
 
   const retrievedProject = await project.getProjectById(projectId);
   const retrievedColumn = await column.getColumnById(columnId);
@@ -27,7 +30,9 @@ export async function deleteTicket(
   }>,
   res: FastifyReply,
 ) {
-  const ticketId = req.params.ticketId;
+  const ticketId = Number(req.params.ticketId);
+
+  if (isNaN(ticketId) || !ticketId) throw new Error(`Invalid ticket id: ${ticketId}`);
 
   const deletedTicket = await ticket.deleteTicketById(ticketId);
 
@@ -41,10 +46,12 @@ export async function editTicket(
   }>,
   res: FastifyReply,
 ) {
-  const ticketIdQuery = req.params.ticketId;
+  const ticketId = Number(req.params.ticketId);
   const editRequestBody = req.body;
 
-  const retrievedTicket = await ticket.getTicketById(ticketIdQuery);
+  if (isNaN(ticketId) || !ticketId) throw new Error(`Invalid ticket id: ${ticketId}`);
+
+  const retrievedTicket = await ticket.getTicketById(ticketId);
   const updatedTicket = await ticket.updateTicket(retrievedTicket, editRequestBody);
 
   return res.send(updatedTicket);

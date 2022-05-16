@@ -10,8 +10,10 @@ export async function createColumn(
   }>,
   res: FastifyReply,
 ) {
-  const projectId = req.params.projectId;
+  const projectId = Number(req.params.projectId);
   const createRequestBody = req.body;
+
+  if (isNaN(projectId) || !projectId) throw new Error(`Invalid project id: ${projectId}`);
 
   const retrievedProject = await project.getProjectById(projectId);
   const createdTicket = await column.createColumn(createRequestBody, retrievedProject);
@@ -26,8 +28,10 @@ export async function editColumnById(
   }>,
   res: FastifyReply,
 ) {
-  const columnId = req.params.columnId;
+  const columnId = Number(req.params.columnId);
   const editRequestBody = req.body;
+
+  if (isNaN(columnId) || !columnId) throw new Error(`Invalid column id: ${columnId}`);
 
   const retrievedColumn = await column.getColumnById(columnId);
   const updatedColumn = await column.updateColumn(retrievedColumn, editRequestBody);

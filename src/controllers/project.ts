@@ -9,9 +9,11 @@ async function getProjectById(
   }>,
   res: FastifyReply,
 ) {
-  const projectIdQuery = req.params.projectId;
+  const projectId = Number(req.params.projectId);
 
-  const retrievedProject = await project.getProjectById(projectIdQuery);
+  if (isNaN(projectId) || !projectId) throw new Error(`Invalid project id: ${projectId}`);
+
+  const retrievedProject = await project.getProjectById(projectId);
 
   return res.send(retrievedProject);
 }
@@ -23,10 +25,12 @@ async function editProjectById(
   }>,
   res: FastifyReply,
 ) {
-  const projectIdQuery = req.params.projectId;
+  const projectId = Number(req.params.projectId);
   const editRequestBody = req.body;
 
-  const retrievedProject = await project.getProjectMetaById(projectIdQuery);
+  if (isNaN(projectId) || !projectId) throw new Error(`Invalid project id: ${projectId}`);
+
+  const retrievedProject = await project.getProjectMetaById(projectId);
   const updatedProject = await project.updateProject(retrievedProject, editRequestBody);
 
   return res.send(updatedProject);

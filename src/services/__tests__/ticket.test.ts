@@ -66,7 +66,7 @@ describe("getTicketById()", () => {
     const mockedId = mockTicket.id;
 
     // Act
-    const res = await ticket.getTicketById(mockTicket.id.toString());
+    const res = await ticket.getTicketById(mockTicket.id);
 
     // Assert
     expect(res.id).toEqual(mockedId);
@@ -74,7 +74,7 @@ describe("getTicketById()", () => {
 
   test("passed id that DOES NOT exist - should return an error message with the passed id", async () => {
     // Arrange
-    const mockedId = "1242323";
+    const mockedId = 1242323;
     const expectedErrorMessage = `Ticket not found for id: ${mockedId}`;
 
     // Act/Assert

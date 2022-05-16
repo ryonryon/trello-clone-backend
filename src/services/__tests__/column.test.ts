@@ -30,7 +30,7 @@ describe("geColumnById()", () => {
     const mockedId = mockProject.columns[0];
 
     // Act
-    const res = await column.getColumnById(mockProject.columns[0].id.toString());
+    const res = await column.getColumnById(mockProject.columns[0].id);
 
     // Assert
     expect(res.id).toBe(mockedId);
@@ -38,7 +38,7 @@ describe("geColumnById()", () => {
 
   test("passed id that DOES NOT exist - should return an error message with the passed id", async () => {
     // Arrange
-    const mockedId = "1242323";
+    const mockedId = 1242323;
     const expectedErrorMessage = `Column not found for id: ${mockedId}`;
 
     // Act/Assert

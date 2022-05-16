@@ -49,14 +49,14 @@ async function getProjectColumns(projectId: string): Promise<Project> {
  * 1. Passed project id is invalid - not convertible to Number
  * 2. Project couldn't be found by the passed id
  */
-export async function getProjectById(projectId: string): Promise<Project> {
+export async function getProjectById(projectId: number): Promise<Project> {
   const projectIdQuery = Number(projectId);
 
   if (isNaN(projectIdQuery) || !projectIdQuery) throw new Error(`Invalid project id: ${projectIdQuery}`);
 
   const project = await Project.findOne({
     where: {
-      id: projectIdQuery,
+      id: projectId,
     },
     relations: {
       columns: {
@@ -73,7 +73,7 @@ export async function getProjectById(projectId: string): Promise<Project> {
     },
   });
 
-  if (!project) throw new Error(`Project not found for id: ${projectIdQuery}`);
+  if (!project) throw new Error(`Project not found for id: ${projectId}`);
 
   return project;
 }
@@ -83,16 +83,12 @@ export async function getProjectById(projectId: string): Promise<Project> {
  * 1. Passed project id is invalid - not convertible to Number
  * 2. Project couldn't be found by the passed id
  */
-async function getProjectMetaById(projectId: string): Promise<Project> {
-  const projectIdQuery = Number(projectId);
-
-  if (isNaN(projectIdQuery) || !projectIdQuery) throw new Error(`Invalid project id: ${projectIdQuery}`);
-
+async function getProjectMetaById(projectId: number): Promise<Project> {
   const project = await Project.findOneBy({
-    id: projectIdQuery,
+    id: projectId,
   });
 
-  if (!project) throw new Error(`Project not found for id: ${projectIdQuery}`);
+  if (!project) throw new Error(`Project not found for id: ${projectId}`);
 
   return project;
 }
