@@ -1,5 +1,25 @@
 import { Column, Project, Ticket } from "../../src/entities";
 
+export async function createTestColumn(): Promise<Column> {
+  const tickets = await Promise.all(
+    Array.from({ length: 2 }, (_, i) => i).map(async (_i) => {
+      const t = new Ticket();
+      t.name = `mock ticket ${_i} name`;
+      t.description = `mock ticket ${_i} description`;
+      t.sort = _i;
+
+      return await t.save();
+    }),
+  );
+
+  const column = new Column();
+  column.name = "mock column name";
+
+  const createdColumn = await column.save();
+
+  return createdColumn;
+}
+
 export async function createTestProject(): Promise<Project> {
   const tickets = await Promise.all(
     Array.from({ length: 4 }, (_, i) => i).map(async (_i) => {

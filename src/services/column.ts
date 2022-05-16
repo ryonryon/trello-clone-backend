@@ -47,7 +47,7 @@ async function getColumnById(columnId: string): Promise<Column> {
  * @returns Column
  */
 async function updateColumn(originalColumn: Column, { name }: Partial<ColumnInput>) {
-  if (name && !name.length) throw new Error("Column name must not be empty");
+  if (!name || !name.length) throw new Error("Column name must not be empty");
 
   const updatedColumn = Object.assign(originalColumn, { name });
 
