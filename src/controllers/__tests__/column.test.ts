@@ -40,9 +40,11 @@ describe("updateColumnsSort", () => {
         sort: 0,
       },
     });
+    const parsedBody = JSON.parse(res.body);
 
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toContain(mockProject.id);
+    expect(parsedBody.id).toBe(mockProject.id);
+    // TODO: more test
   });
 
   test("Pass broken query - it should return error that indicates column not found", async () => {

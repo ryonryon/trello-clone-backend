@@ -24,13 +24,13 @@ describe("createTicket", () => {
       expect(res.body).toContain(expectedErrorMessage);
     });
 
-    test("Unexist projectId - it should return error that indicates project with the id is unexist", async () => {
+    test("projectId that DOES NOt exist - it should return error that indicates project with the id is unexist", async () => {
       const expectedErrorMessage =
         '{"statusCode":500,"error":"Internal Server Error","message":"Project not found for id: 99999"}';
       const mockName = "test";
       const res = await app.inject({
         method: "post",
-        url: "/projects/99999/columns/a/tickets",
+        url: "/projects/99999/columns/1/tickets",
         payload: {
           name: mockName,
         },
