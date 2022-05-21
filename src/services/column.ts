@@ -87,7 +87,7 @@ async function updateColumnsSort(project: Project, column: { columnId: number; s
     await columns[i].save();
   }
 
-  return getProjectById(project.id.toString());
+  return getProjectById(project.id);
 }
 
 export default { createColumn, getColumnById, updateColumn, updateColumnsSort };
