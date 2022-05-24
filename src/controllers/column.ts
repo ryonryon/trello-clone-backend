@@ -49,8 +49,10 @@ export async function updateColumnsSort(
   }>,
   res: FastifyReply,
 ) {
-  const projectId = req.params.projectId;
+  const projectId = Number(req.params.projectId);
   const editRequestBody = req.body;
+
+  if (isNaN(projectId) || !projectId) throw new Error(`Invalid project id: ${projectId}`);
 
   const retrievedProjectColumns = await project.getProjectColumns(projectId);
   const updatedProjectColumns = await column.updateColumnsSort(retrievedProjectColumns, editRequestBody);
