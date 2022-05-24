@@ -45,7 +45,7 @@ describe("updateColumnsSort", () => {
     expect(res.body).toContain(mockProject.id);
   });
 
-  test("Pass broken query - it should return error that indicates column not found", async () => {
+  test("Pass broken query - it should return error that indicates project not found with the projectId", async () => {
     const expectedErrorMessage =
       '{"statusCode":500,"error":"Internal Server Error","message":"Invalid project id: NaN"}';
     const res = await app.inject({
