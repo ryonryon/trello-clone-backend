@@ -1,5 +1,5 @@
 import { build } from "../../../tests/helper";
-import { createTestTicket } from "../../../tests/helper/utils";
+import { createTestProject, createTestTicket } from "../../../tests/helper/utils";
 import { Column, Project, Ticket, TicketInput } from "../../entities";
 import ticket from "../ticket";
 
@@ -7,7 +7,32 @@ import ticket from "../ticket";
 build();
 
 describe("createTicket()", () => {
-  test.todo("passed proper request body - should return an created body");
+  let mockedProject: Project;
+
+  beforeAll(async () => {
+    mockedProject = await createTestProject();
+  });
+
+  afterAll(async () => {
+    mockedProject.remove();
+  });
+
+  test("passed proper request body - should return an created body", async () => {
+    // Arrange
+    const mockedTicketName = "mocked ticket name";
+    const mockedTicketSort = 99;
+
+    // Act
+    const res = await ticket.createTicket(
+      { name: mockedTicketName, sort: mockedTicketSort },
+      mockedProject,
+      mockedProject.columns[0],
+    );
+
+    // Assert
+    expect(res.name).toBe(mockedTicketName);
+    expect(res.sort).toBe(mockedTicketSort);
+  });
 
   test("passed body with name undefined - should return an error message that name is required", async () => {
     // Arrange
@@ -45,6 +70,16 @@ describe("createTicket()", () => {
 });
 
 describe("deleteTicketById()", () => {
+  let mockedProject: Project;
+
+  beforeAll(async () => {
+    mockedProject = await createTestProject();
+  });
+
+  afterAll(async () => {
+    mockedProject.remove();
+  });
+
   test.todo("Passed proper request body - It successfully delete the entity and it should return an deleted body");
 
   test.todo("Passed id that DOES NOT exist - should return an error message with the passed id");

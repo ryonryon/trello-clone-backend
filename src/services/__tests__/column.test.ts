@@ -7,11 +7,46 @@ import { column } from "..";
 build();
 
 describe("createColumn()", () => {
-  test.todo("passed proper request body - should return an created body");
+  let mockProject: Project;
 
-  test.todo("passed body with name undefined - should return an error message that name is required");
+  beforeAll(async () => {
+    mockProject = await createTestColumns();
+  });
 
-  test.todo("passed body with empty name - should return an error message that name is required");
+  beforeAll(async () => {
+    await mockProject.remove();
+  });
+
+  test("passed proper request body - should return an created body", async () => {
+    // Arrange
+    const mockedName = "create column test name";
+
+    // Act
+    const res = await column.createColumn({ name: mockedName }, mockProject);
+
+    // Assert
+    expect(res.name).toBe(mockedName);
+    expect(res.project.id).toBe(mockProject.id);
+    expect(res.sort).toBe(mockProject.columns.length + 1);
+  });
+
+  test("passed body with name undefined - should return an error message that name is required", async () => {
+    // Arrange
+    const mockedName = undefined;
+    const expectedErrorMessage = "name is required to create column";
+
+    // Act/Assert
+    await expect(column.createColumn({ name: mockedName }, mockProject)).rejects.toThrow(expectedErrorMessage);
+  });
+
+  test("passed body with empty name - should return an error message that name is required", async () => {
+    // Arrange
+    const mockedName = "";
+    const expectedErrorMessage = "name is required to create column";
+
+    // Act/Assert
+    await expect(column.createColumn({ name: mockedName }, mockProject)).rejects.toThrow(expectedErrorMessage);
+  });
 });
 
 describe("geColumnById()", () => {
@@ -25,9 +60,9 @@ describe("geColumnById()", () => {
     await mockProject.remove();
   });
 
-  test("passed id that exists - should return a column with the passed id", async () => {
+  test("passed columnid that exists - should return a column with the passed id", async () => {
     // Arrange
-    const mockedId = mockProject.columns[0];
+    const mockedId = mockProject.columns[0].id;
 
     // Act
     const res = await column.getColumnById(mockProject.columns[0].id);

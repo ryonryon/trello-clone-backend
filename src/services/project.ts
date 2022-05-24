@@ -5,8 +5,6 @@ import { Project } from "../entities";
  * 1. Passed project id is invalid - not convertible to Number
  */
 export async function getProjectColumnCount(projectId: number): Promise<number> {
-  if (isNaN(projectId) || !projectId) throw new Error(`Invalid project id: ${projectId}`);
-
   return await Project.count({
     where: {
       id: projectId,
@@ -17,14 +15,10 @@ export async function getProjectColumnCount(projectId: number): Promise<number> 
   });
 }
 
-async function getProjectColumns(projectId: string): Promise<Project> {
-  const projectIdQuery = Number(projectId);
-
-  if (isNaN(projectIdQuery) || !projectIdQuery) throw new Error(`Invalid project id: ${projectIdQuery}`);
-
+async function getProjectColumns(projectId: number): Promise<Project> {
   const project = await Project.findOne({
     where: {
-      id: projectIdQuery,
+      id: projectId,
     },
     relations: {
       columns: {
@@ -50,10 +44,6 @@ async function getProjectColumns(projectId: string): Promise<Project> {
  * 2. Project couldn't be found by the passed id
  */
 export async function getProjectById(projectId: number): Promise<Project> {
-  const projectIdQuery = Number(projectId);
-
-  if (isNaN(projectIdQuery) || !projectIdQuery) throw new Error(`Invalid project id: ${projectIdQuery}`);
-
   const project = await Project.findOne({
     where: {
       id: projectId,

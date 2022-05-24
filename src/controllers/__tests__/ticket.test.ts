@@ -5,6 +5,16 @@ import { Project } from "../../entities";
 const app = build();
 
 describe("createTicket", () => {
+  let project: Project;
+
+  beforeAll(async () => {
+    project = await createTestProject();
+  });
+
+  afterAll(async () => {
+    project.remove();
+  });
+
   test.todo("Passed appropriate query and body - it should successfully create new ticket");
 
   describe("Passed inapropriate query or body", () => {
@@ -24,7 +34,7 @@ describe("createTicket", () => {
       expect(res.body).toContain(expectedErrorMessage);
     });
 
-    test("Unexist projectId - it should return error that indicates project with the id is unexist", async () => {
+    test("projectId that DOES NOT exist - it should return error that indicates project with the id is unexist", async () => {
       const expectedErrorMessage =
         '{"statusCode":500,"error":"Internal Server Error","message":"Project not found for id: 99999"}';
       const mockName = "test";
@@ -46,7 +56,7 @@ describe("createTicket", () => {
       const mockName = "test";
       const res = await app.inject({
         method: "post",
-        url: "/projects/1/columns/a/tickets",
+        url: `/projects/${project.id}/columns/a/tickets`,
         payload: {
           name: mockName,
         },
@@ -62,7 +72,7 @@ describe("createTicket", () => {
       const mockName = "test";
       const res = await app.inject({
         method: "post",
-        url: "/projects/1/columns/99999/tickets",
+        url: `/projects/${project.id}/columns/99999/tickets`,
         payload: {
           name: mockName,
         },
@@ -77,7 +87,7 @@ describe("createTicket", () => {
         '{"statusCode":500,"error":"Internal Server Error","message":"name is required to create ticket"}';
       const res = await app.inject({
         method: "post",
-        url: "/projects/1/columns/1/tickets",
+        url: `/projects/${project.id}/columns/${project.columns[0].id}/tickets`,
         payload: {
           name: undefined,
         },
@@ -93,7 +103,7 @@ describe("createTicket", () => {
       const mockName = "";
       const res = await app.inject({
         method: "post",
-        url: "/projects/1/columns/1/tickets",
+        url: `/projects/${project.id}/columns/${project.columns[0].id}/tickets`,
         payload: {
           name: mockName,
         },

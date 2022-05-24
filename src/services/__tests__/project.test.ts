@@ -1,5 +1,5 @@
 import { build } from "../../../tests/helper";
-import { createTestProject } from "../../../tests/helper/utils";
+import { createTestColumns, createTestProject } from "../../../tests/helper/utils";
 import { Project } from "../../entities";
 import { project } from "../../services";
 
@@ -7,9 +7,35 @@ import { project } from "../../services";
 build();
 
 describe("getProjectColumnCount()", () => {
-  test.todo("passed id that exists - should return a number of columns in the project");
+  let mockProject: Project;
 
-  test.todo("passed id that DOES NOT exist - should return an error message with the passed id");
+  beforeAll(async () => {
+    mockProject = await createTestColumns();
+  });
+
+  afterAll(async () => {
+    await mockProject.remove();
+  });
+
+  test("passed id that exists - should return a number of columns in the project", async () => {
+    // Arrange
+    const expectColumnLength = mockProject.columns.length;
+
+    // Act
+    const res = await project.getProjectColumnCount(mockProject.id);
+
+    // Assert
+    expect(res).toBe(expectColumnLength);
+  });
+
+  test("passed id that DOES NOT exist - should return an error message with the passed id", async () => {
+    // Arrange
+    const mockedId = 1242323;
+    const expectedErrorMessage = `Project not found for id: ${mockedId}`;
+
+    // Act/Assert
+    await expect(project.getProjectColumnCount(mockedId)).rejects.toThrow(expectedErrorMessage);
+  });
 });
 
 describe("getProjectMetaById()", () => {

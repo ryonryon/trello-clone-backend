@@ -54,11 +54,21 @@ describe("get project", () => {
 });
 
 describe("put project", () => {
+  let mockProject: Project;
+
+  beforeAll(async () => {
+    mockProject = await createTestProject();
+  });
+
+  afterAll(async () => {
+    await mockProject.remove();
+  });
+
   test("Pass proper body - it should successfully edit existing project", async () => {
     const mockName = "this is mocked name";
     const res = await app.inject({
       method: "put",
-      url: "/projects/1",
+      url: `/projects/${mockProject.id}`,
       payload: {
         name: mockName,
       },
@@ -90,7 +100,7 @@ describe("put project", () => {
     const mockName = 212;
     const res = await app.inject({
       method: "put",
-      url: "/projects/1",
+      url: `/projects/${mockProject.id}`,
       payload: {
         crazyKey: mockName,
       },
