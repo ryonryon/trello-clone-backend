@@ -34,9 +34,12 @@ describe("get project", () => {
       url: `/projects/${mockProject.id}`,
       payload: {},
     });
+    const parsedBody = JSON.parse(res.body);
 
     // assign
-    expect(JSON.parse(res.body)).toEqual(expectedReturn);
+    expect(parsedBody.id).toEqual(mockProject.id);
+    expect(parsedBody.name).toEqual(mockProject.name);
+    expect(parsedBody.description).toEqual(mockProject.description);
   });
 
   test("Passed id that DOES NOT exist - it should successfully fetch existing project", async () => {
