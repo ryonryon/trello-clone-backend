@@ -27,7 +27,6 @@ export function build(): FastifyInstance {
   afterAll(async () => {
     await database.destroy();
     await app.close();
-    app.server.unref();
   });
 
   return app;
