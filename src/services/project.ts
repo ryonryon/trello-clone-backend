@@ -27,10 +27,7 @@ async function getProjectColumns(projectId: string): Promise<Project> {
       id: projectIdQuery,
     },
     relations: {
-      columns: {
-        id: true,
-        sort: true,
-      },
+      columns: true,
     },
     order: {
       columns: {
@@ -65,7 +62,7 @@ export async function getProjectById(projectId: number): Promise<Project> {
     },
     order: {
       columns: {
-        id: "ASC",
+        sort: "ASC",
         tickets: {
           id: "ASC",
         },

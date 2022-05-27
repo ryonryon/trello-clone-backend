@@ -21,13 +21,13 @@ describe("geColumnById()", () => {
     mockProject = await createTestColumns();
   });
 
-  beforeAll(async () => {
+  afterAll(async () => {
     await mockProject.remove();
   });
 
   test("passed id that exists - should return a column with the passed id", async () => {
     // Arrange
-    const mockedId = mockProject.columns[0];
+    const mockedId = mockProject.columns[0].id;
 
     // Act
     const res = await column.getColumnById(mockProject.columns[0].id);
@@ -53,7 +53,7 @@ describe("updateColumnSort()", () => {
     mockProject = await createTestColumns();
   });
 
-  beforeAll(async () => {
+  afterAll(async () => {
     await mockProject.remove();
   });
 
@@ -65,10 +65,10 @@ describe("updateColumnSort()", () => {
     });
 
     // Act/Assert
-    expect(updatedProject.columns[0].name).toBe("mock column 2 name");
+    expect(updatedProject.columns[0].name).toBe("mock column 3 name");
     expect(updatedProject.columns[1].name).toBe("mock column 0 name");
     expect(updatedProject.columns[2].name).toBe("mock column 1 name");
-    expect(updatedProject.columns[3].name).toBe("mock column 3 name");
+    expect(updatedProject.columns[3].name).toBe("mock column 2 name");
   });
 
   test("Passed columnId that DOES NOT exist - should return an error message with the passed id", async () => {
