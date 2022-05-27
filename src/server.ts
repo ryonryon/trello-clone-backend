@@ -23,16 +23,6 @@ const initializeServer = () => {
   server.delete("/projects/:projectId/columns/:columnId/tickets/:ticketId", ticket.deleteTicket);
   server.put("/projects/:projectId/columns/:columnId/tickets/:ticketId", ticket.editTicket);
 
-  server.listen(5030, (err, address) => {
-    if (err) {
-      console.error(err);
-
-      process.exit(1);
-    }
-
-    console.log(`Server listening at ${address}`);
-  });
-
   return server;
 };
 
