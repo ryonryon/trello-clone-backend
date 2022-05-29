@@ -33,7 +33,7 @@ describe("updateColumnsSort", () => {
 
   test("Pass proper query and body - it should successfully update columns sort in the project", async () => {
     const res = await app.inject({
-      method: "patch",
+      method: "put",
       url: `/projects/${mockProject.id}/columns`,
       payload: {
         columnId: mockProject.columns[2].id,
@@ -65,12 +65,13 @@ describe("updateColumnsSort", () => {
 
   test("Pass broken body - it should return error that indicates passed body isn't appropriate", async () => {
     const mockedSort = -1;
+    const targetMockedTicketId = mockProject.columns[2].id;
     const expectedErrorMessage = `{"statusCode":500,"error":"Internal Server Error","message":"sort: ${mockedSort} must be 0 or more and less than length of project.colmns"}`;
     const res = await app.inject({
       method: "put",
       url: `/projects/${mockProject.id}/columns`,
       payload: {
-        columnId: mockProject.columns[1].id,
+        columnId: targetMockedTicketId,
         sort: mockedSort,
       },
     });
