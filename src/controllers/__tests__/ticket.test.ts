@@ -181,3 +181,41 @@ describe("editTicket", () => {
     expect(res.body).toContain(expectedErrorMessage);
   });
 });
+
+describe("getTicket", () => {
+  let mockedProject: Project;
+
+  beforeAll(async () => {
+    mockedProject = await createTestProject();
+  });
+
+  afterAll(async () => {
+    await mockedProject.remove();
+  });
+
+  test("Passed appropriate query - it should successfully fetch existing ticket", async () => {
+    const res = await app.inject({
+      method: "get",
+      url: `/projects/${mockedProject.id}/tickets/${mockedProject.tickets[0].id}`,
+      payload: {},
+    });
+    const parsedBody = JSON.parse(res.body);
+
+    expect(parsedBody.id).toEqual(mockedProject.tickets[0].id);
+    expect(parsedBody.name).toEqual(mockedProject.tickets[0].name);
+    expect(parsedBody.description).toEqual(mockedProject.tickets[0].description);
+  });
+
+  test("Passed id that DOES NOT exist - it should successfully fetch existing ticket", async () => {
+    const expectedErrorMessage =
+      '{"statusCode":500,"error":"Internal Server Error","message":"Ticket not found for id: 99999999"}';
+    const res = await app.inject({
+      method: "get",
+      url: `/projects/${mockedProject.id}/tickets/99999999`,
+      payload: {},
+    });
+
+    expect(res.statusCode).toEqual(500);
+    expect(res.body).toContain(expectedErrorMessage);
+  });
+});

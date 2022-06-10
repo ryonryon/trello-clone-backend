@@ -57,8 +57,23 @@ export async function editTicket(
   return res.send(updatedTicket);
 }
 
+export async function getTicketById(
+  req: FastifyRequest<{
+    Params: { ticketId: string };
+    Body: Ticket;
+  }>,
+  res: FastifyReply,
+) {
+  const ticketId = Number(req.params.ticketId);
+
+  if (isNaN(ticketId) || !ticketId) throw new Error(`Invalid ticket id: ${ticketId}`);
+
+  return await ticket.getTicketById(ticketId);
+}
+
 export default {
   createTicket,
   deleteTicket,
   editTicket,
+  getTicketById,
 };

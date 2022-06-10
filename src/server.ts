@@ -19,6 +19,7 @@ const initializeServer = () => {
   server.patch("/projects/:projectId/columns/:columnId", column.editColumnById);
 
   // ticket
+  server.get("/projects/:projectId/tickets/:ticketId", ticket.getTicketById);
   server.post("/projects/:projectId/columns/:columnId/tickets", ticket.createTicket);
   server.delete("/projects/:projectId/columns/:columnId/tickets/:ticketId", ticket.deleteTicket);
   server.put("/projects/:projectId/columns/:columnId/tickets/:ticketId", ticket.editTicket);
